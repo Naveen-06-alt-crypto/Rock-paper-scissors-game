@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rock Paper Scissors</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #f0f8ff, #e0ffff);
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    .choices button {
+      font-size: 18px;
+      padding: 10px 20px;
+      margin: 10px;
+      border: none;
+      border-radius: 12px;
+      background-color: #4682b4;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .choices button:hover {
+      background-color: #5dade2;
+    }
+
+    .scoreboard, .result, .final {
+      margin-top: 20px;
+      font-size: 20px;
+    }
+
+    .final {
+      font-weight: bold;
+      color: #d2691e;
+    }
+
+    .reset-btn {
+      margin-top: 20px;
+      background: #dc143c;
+      padding: 8px 16px;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .reset-btn:hover {
+      background-color: #e74c3c;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎮 Rock Paper Scissors Game</h1>
+
+  <div class="choices">
+    <button onclick="play('rock')">🪨 Rock</button>
+    <button onclick="play('paper')">📄 Paper</button>
+    <button onclick="play('scissors')">✂️ Scissors</button>
+  </div>
+
+  <div class="scoreboard">
+    <p>👤 Player Score: <span id="playerScore">0</span></p>
+    <p>💻 Computer Score: <span id="computerScore">0</span></p>
+    <p>📊 Round: <span id="round">0</span> / 5</p>
+  </div>
+
+  <div class="result" id="result"></div>
+  <div class="final" id="finalMessage"></div>
+
+  <button class="reset-btn" onclick="resetGame()">🔁 Reset</button>
+
+  <script>
+    let playerScore = 0;
+    let computerScore = 0;
+    let round = 0;
+    const totalRounds = 5;
+
+    function computerChoice() {
+      const choices = ['rock', 'paper', 'scissors'];
+      return choices[Math.floor(Math.random() * choices.length)];
+    }
+
+    function play(playerMove) {
+      if (round >= totalRounds) return;
+
+      const compMove = computerChoice();
+      let result = '';
+
+      if (playerMove === compMove) {
+        result = `🤝 It's a Tie! Both chose ${playerMove}.`;
+      } else if (
+        (playerMove === 'rock' && compMove === 'scissors') ||
+        (playerMove === 'paper' && compMove === 'rock') ||
+        (playerMove === 'scissors' && compMove === 'paper')
+      ) {
+        playerScore++;
+        result = `✅ You Win! ${playerMove} beats ${compMove}.`;
+      } else {
+        computerScore++;
+        result = `❌ You Lose! ${compMove} beats ${playerMove}.`;
+      }
+
+      round++;
+      document.getElementById('playerScore').innerText = playerScore;
+      document.getElementById('computerScore').innerText = computerScore;
+      document.getElementById('round').innerText = round;
+      document.getElementById('result').innerText = result;
+
+      if (round === totalRounds) {
+        let finalMsg = '';
+        if (playerScore > computerScore) {
+          finalMsg = '🎉 You are the Overall Winner!';
+        } else if (playerScore < computerScore) {
+          finalMsg = '😢 Computer Wins the Game!';
+        } else {
+          finalMsg = '🤝 The Game is a Tie!';
+        }
+        document.getElementById('finalMessage').innerText = finalMsg;
+      }
+    }
+
+    function resetGame() {
+      playerScore = 0;
+      computerScore = 0;
+      round = 0;
+      document.getElementById('playerScore').innerText = playerScore;
+      document.getElementById('computerScore').innerText = computerScore;
+      document.getElementById('round').innerText = round;
+      document.getElementById('result').innerText = '';
+      document.getElementById('finalMessage').innerText = '';
+    }
+  </script>
+</body>
+</html>
